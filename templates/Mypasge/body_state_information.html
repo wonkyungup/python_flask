@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+{% block title %}MyPage{% endblock %}
+{% block head %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>비만도 계산기</title>
+<style type="text/css">
+		td {
+			font-family: "돋움";
+			font-size: 12px;
+			color: #333333;
+			line-height: 16px;
+		}
+		IMG {border: none;}
+		input{ font-size:9pt;border:1px solid #c0c6ee; background-color:#fafafa; text-align:center;}
+		.style7 {color: #262c68}
+		.style8 {
+			color: #999999;
+			font-size: 11px;
+		}
+</style>
+<SCRIPT language=javascript>
+
+		function resize(){
+			if (document.all){
+				var h=0;
+				if (navigator.userAgent.indexOf("SV1") > 0){  h=14; } 
+				else if(navigator.userAgent.indexOf("MSIE 6") > 0){ h = 4; }
+				else if(navigator.userAgent.indexOf("MSIE 7") > 0){ h = 44;}
+				else if(navigator.userAgent.indexOf("MSIE 8") > 0){ h = 44; }
+				else if(navigator.userAgent.indexOf("Gecko")>0 && navigator.userAgent.indexOf("Firefox") <= 0 && navigator.userAgent.indexOf("Netscape") <= 0 ){ h=22; } 
+				else if(navigator.userAgent.indexOf("Firefox") >0 ){  h=18; } 
+				else if(navigator.userAgent.indexOf("Netscape") >0 ){ h=-2; }
+				else { h=4;} 
+				window.resizeTo(760,710+h)
+			
+			}else{
+				wW=window.outerWidth
+				wH=window.outerHeight
+				window.resizeTo(wW,wH);
+			}
+		}
+		
+		var img = 1;
+		
+		function tab_out(){
+			for(i=1; i <= 4; i++){
+				document.getElementById("menu_"+i).src = "http://img.enuri.gscdn.com/images/guide/health/tabl_0"+i+".gif";		
+				if (i == img){
+					document.getElementById("menu_"+img).src = "http://img.enuri.gscdn.com/images/guide/health/tabl_0"+img+"_1.gif";
+				}
+			}
+		}
+		
+		function tab_click(param){
+			location.href="Health_"+param+".html";
+		}
+		
+		function isNumber( Num1 ){
+			var possNum = "1234567890.";
+			var chkNum = "";
+			var i=0; var j=0; var k=0;
+			
+			for (i=0 ; i<Num1.length; i++){
+				chkNum = Num1.charAt(i);
+				for(j=0; j<possNum.length; j++){	
+					if (possNum.charAt(j)==chkNum){ k++; }
+				}
+			}
+			if (k>0) { return true;  }
+			else	 { return false; }
+		} 
+		
+		function getIdealWeight(height, gender){
+			var IWeight;
+			var Height = height/100 ;
+			
+			if(gender=="1"){
+				IWeight = Height * Height * 22;
+			}else {
+				IWeight = Height * Height * 21;
+			}
+		
+			IWeight	= Math.round(IWeight*100)/100.00;
+			return IWeight;
+		}
+		
+		function Cal1(){
+			var Gender;
+			var I_Energy;
+			var I_Basal;
+			var I_Active;
+			var I_Food;
+		
+			
+			if (form1.gender.value==0){
+				alert("성별을 선택해 주십시오");
+				form1.gender.focus();
+				return;
+			}
+			if (form1.HEIGHT.value.length==0){
+				alert("신장을 입력해 주십시오");
+				form1.HEIGHT.focus();
+				return;
+			}
+			if (!isNumber(form1.HEIGHT.value)){
+				alert("숫자로만 입력해 주십시오.");
+				form1.HEIGHT.value="";
+				form1.HEIGHT.focus();
+				return;
+			}
+		
+			if (form1.WEIGHT.value.length==0){
+				alert("체중을 입력해 주십시오");
+				form1.WEIGHT.focus();
+				return;
+			}
+			if (!isNumber(form1.WEIGHT.value)){
+				alert("숫자로만 입력해 주십시오.");
+				form1.WEIGHT.value="";
+				form1.WEIGHT.focus();
+				return;
+			}
+			
+			if (form1.active.value==0){
+				alert("평소 활동 성향을 선택해 주십시오");
+				form1.active.focus();
+				return;
+			}
+			if (form1.gender.value=="1") { 
+				Gender = "1"; 
+				I_Basal = O_Weight * 1.0 * 24;
+			} else { 
+				Gender = "2"; 
+				I_Basal = O_Weight * 0.9 * 24;	
+			}
+		
+			var O_Weight = form1.WEIGHT.value;
+			var O_Height = form1.HEIGHT.value;
+		
+			var I_Weight = getIdealWeight(O_Height, Gender);
+			var P_Weight = ((O_Weight - I_Weight) / I_Weight) * 100;
+				P_Weight = Math.round(P_Weight);
+				
+			if (form1.gender.value=="1") { 
+				I_Basal = Math.round(O_Weight * 1.0 * 24);
+			} else { 
+				I_Basal = Math.round(O_Weight * 0.9 * 24);	
+			}
+			
+			if (form1.active.value =="1"){
+				I_Active = Math.round(I_Basal * 0.3)
+			}else if (form1.active.value =="2"){
+				I_Active = Math.round(I_Basal * 0.6)
+			}else if (form1.active.value =="3"){
+				I_Active = Math.round(I_Basal * 0.7)
+			}else if (form1.active.value =="4"){
+				I_Active = Math.round(I_Basal * 0.9)
+			}
+			
+			I_Food = Math.round(((I_Basal + I_Active) / 0.9) * 0.1);
+			I_Energy = I_Basal + I_Active + I_Food;
+			
+			form1.S_WEIGHT.value = I_Weight;
+			form1.S_PER.value	 = P_Weight + "%";
+			document.getElementById("S_Basal").innerHTML  = I_Basal;
+			document.getElementById("S_Active").innerHTML  = I_Active;
+			document.getElementById("S_Food").innerHTML  = I_Food;
+			form1.S_Energy1.value	 = I_Energy;
+			document.getElementById("S_Energy2").innerHTML  = I_Energy;
+		}
+		
+		function cal2(){
+			document.getElementById("S_Basal").innerHTML  = "";
+			document.getElementById("S_Active").innerHTML  = "";
+			document.getElementById("S_Food").innerHTML  = "";
+			document.getElementById("S_Energy2").innerHTML  = "";
+		}
+</SCRIPT>
+{% endblock %}
+{% block body %}
+<div class="w3-container" id="where" style="padding-bottom:32px;">
+  <div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">신체 정보 확인</span></h5>
+    <p><span class="w3-tag">*</span> 부담하지마시고 결과해보세요.</p>
+    <p><strong>*</strong> 재미용입니다.많이 이용해주세요.</p>
+	<form name=form1>
+		<table width="710" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td style="border-bottom:2px solid #cccccc">
+					<TABLE cellSpacing=0 cellPadding=0>
+						<TR>
+							
+						</TR>
+					</TABLE>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td><img src="http://img.enuri.gscdn.com/images/guide/health/tit_01.gif" width="87" height="16" /></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td><img src="http://img.enuri.gscdn.com/images/guide/health/img_01.gif" width="670" height="126" /></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>
+					<table width="670" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td><img src="http://img.enuri.gscdn.com/images/guide/health/box_tit_01.gif" width="670" height="17" /></td>
+						</tr>
+						<tr>
+	       					<td align="center" background="http://img.enuri.gscdn.com/images/guide/health/box_02.gif">
+	       						<table width="650" border="0" cellspacing="0" cellpadding="0">
+	          						<tr>
+							        	<td height="35" align="left">나는         
+							            	<select name="gender" id="gender">
+							                	<option value="0">성별</option>
+							                    <option value="1">남자</option>
+							                    <option value="2">여자</option>
+							                </select>입니다.              
+							       		</td>
+							       	</tr>
+							        <tr>
+							        	<td height="35" align="left">나의 키는
+							            	<input type="text" size="5" name="HEIGHT" /> Cm이고, 몸무게는  <input type="text" size="5" name="WEIGHT" /> Kg입니다.
+							            </td>
+							        </tr>
+							        <tr>
+							        	<td height="35" align="left">나는 평소 
+							            	<select name="active" id="active">
+							            		<option value="0">::: 선택해 주세요 :::</option>
+								                <option value="1">아주 가벼운 활동(고시생)</option>
+								                <option value="2">가벼운 활동 (앉아있는 사무직)</option>
+								                <option value="3">보통 활동 (몸을 움직이는 직업)</option>
+								                <option value="4">심한 활동 (격하게 움직이는 직업)</option>
+							                </select>
+						              		정도의 활동을 주로 합니다.
+						              	</td>
+							      	</tr>
+						            <tr>
+						            	<td height="35" align="center"><img src="http://img.enuri.gscdn.com/images/guide/health/btn_count.gif" width="60" height="20" onClick="Cal1();" style="cursor:hand" /></a></td>
+						            </tr>
+						            <tr>
+							            <td>
+								            <table width="650" border="0" cellpadding="0" cellspacing="1" bgcolor="c0c6ee">
+									            <tr>
+									           		<td height="30" align="left" bgcolor="d1d7f8" ><strong>&nbsp;&nbsp;<span class="style7">나의 표준체중과 비만도 결과</span></strong></td>
+									           		<td align="left" bgcolor="e3e7fb">&nbsp;&nbsp;나의 표준체중은  <input type="text" size="5" name="S_WEIGHT"/> kg 이며, 비만도는   <input type="text" size="5" name="S_PER"/> 입니다.
+									            	</td>
+									            </tr>
+									            <tr>
+										            <td height="30" align="left" bgcolor="d1d7f8" ><strong>&nbsp;&nbsp;<span class="style7">나의 하루 필요 에너지 결과</span></strong></td>
+										            <td align="left" bgcolor="e3e7fb">&nbsp;&nbsp;하루동안 나에게 필요한 에너지 량은 <input type="text" size="5" id="S_Energy1"/> kcal입니다.
+										            </td>
+									            </tr>
+								            </table>
+							            </td>
+						            </tr>
+						          	<tr>
+						            	<td>&nbsp;</td>
+						          	</tr>
+						            <tr>
+							            <td>
+								            <table width="650" border="0" cellpadding="0" cellspacing="1" bgcolor="c0c6ee">
+								            	<tr>
+									                <td width="50" height="40" bgcolor="e3e7fb">&nbsp;</td>
+									                <td width="150" align="center" bgcolor="e3e7fb"><b>기초대사량(kcal)</b></td>
+									                <td width="150" align="center" bgcolor="e3e7fb"><b>활동대사량(kcal)</b></td>
+									                <td width="150" align="center" bgcolor="e3e7fb"><b>식품 이용을 위한 <br/>에너지(kcal)</b></td>
+								                	<td width="150" align="center" bgcolor="e3e7fb"><b>나의 하루에 필요한 <br/>에너지(kcal)</b></td>
+								              	</tr>
+								              	<tr>
+									                <td height="24" align="center" bgcolor="#FFFFFF"><b>수치</b></td>
+									                <td bgcolor="#FFFFFF" id="S_Basal">&nbsp;</div></td>
+									                <td bgcolor="#FFFFFF" id="S_Active">&nbsp;</td>
+									                <td bgcolor="#FFFFFF" id="S_Food">&nbsp;</td>
+									                <td bgcolor="#FFFFFF" id="S_Energy2">&nbsp;</td>
+								              	</tr>
+								            </table>
+							            </td>
+						            </tr>
+							        <tr>
+							        	<td height="35" align="center"><img src="http://img.enuri.gscdn.com/images/guide/health/btn_count_reRE.gif" width="60" height="20" onClick="form1.reset();cal2();" style="cursor:hand"/></td>
+							        </tr>
+						            <tr>
+						           		<td align="left"><span class="style8">* 기초대사율이란 아무활동 안해도 생체대사를 위해 쓰여지는 에너지를 말합니다.<br />
+							              &nbsp;&nbsp;체온을 유지하고 장기를 움직이는데 쓰여지는 에너지로, 기초대사량 이하를 섭취하게되면 근육을 분해해 에너지로 쓰입니다.<br />
+							              &nbsp;&nbsp;(근육의 자살)</span>
+							        	</td>
+						            </tr>
+						          	<tr>
+						            	<td>&nbsp;</td>
+						         	 </tr>
+						        </table>
+							</td>
+					    </tr>
+				   		<tr>
+						    <td><img src="http://img.enuri.gscdn.com/images/guide/health/box_03.gif" width="670" height="3" /></td>
+					    </tr>
+	    			</table>
+	    		</td>
+	  		</tr>
+		</table>
+	</form>
+{% endblock %}

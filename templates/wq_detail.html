@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Wirt QnA{% endblock %}
+{% block head %}
+	<script  type="text/javascript">
+function wq_delete(){
+	//alert('경업바보');
+	//return false;
+		if (confirm("정말 삭제하시겠습니까??") == true){
+		    document.form.submit();
+		    return true;
+		}else{   
+		    return false;
+		}
+	}
+	function wq_update(){
+		//alert('경업바보');
+		//return false;
+		if (confirm("정말 바꾸시겠습니까??") == true){
+		    document.form.submit();
+		    return true;
+		}else{   
+		    return false;
+		}
+	}
+</script>
+{% endblock %}
+{% block body %}
+<div class="w3-container" id="where" style="padding-bottom:32px;">
+  <div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">글쓰기</span></h5>
+    <p>아래의 양식에 정보를 입력해주시기 바랍니다.</p>
+    <p><strong>*</strong> 욕은 삼가해주세요.</p>
+    제목 : <p class="w3-input w3-padding-16 w3-border" type="text">{{result.title}}</p><br/>
+    작성자 : <p class="w3-input w3-padding-16 w3-border" type="text">{{result.id}}</p><br/>
+    내용 : <p class="w3-input w3-padding-16 w3-border" type="text">{{result.content}}</p><br/>
+    <span style="float:right"><button><a href="qna">목록</a></button></span>
+     
+     <form action="/wq_detail_action" method="post" onsubmit="return wq_delete()">
+     	<input type="hidden" name="no" value="{{result.no}}">
+     	<span style="float:right"><button  type="submit">삭제하기</button></span>
+     </form>
+     
+ </div>
+</div>
+{% endblock %}

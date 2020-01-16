@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Main{% endblock %}
+{% block body %}
+<div class="w3-container" id="about">
+  <div class="w3-content" style="max-width:700px">
+   	{% if session['logged_in'] %}
+   	<p>이름: {{session.name}}</p>
+   	<p><button class="w3-button w3-black" type="button" OnClick="location.href='/logout'">로그아웃</button>
+   	<button class="w3-button w3-black" type="button" OnClick="location.href='mypage'">마이페이지</button></p>
+   	{% else %}
+    <form action="/login_action" method="post">
+	  <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="ID" required name="id"></p>
+      <p><input class="w3-input w3-padding-16 w3-border" type="password" placeholder="Password" required name="password"></p>
+      <p align="center"><button class="w3-button w3-black" type="submit">로그인</button> <button class="w3-button w3-black" type="button" OnClick="location.href='join'">회원가입</button></p>
+      <p align="center"><button class="w3-button w3-black" type="submit">ID/PW 분실</button></p>
+    </form>
+    {% endif %}
+    
+    <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">공지사항</span></h5>
+    <p>{{session.name}}The Cafe was founded in blabla by Mr. Smith in lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <p>In addition to our full espresso and brew bar menu, we serve fresh made-to-order breakfast and lunch sandwiches, as well as a selection of sides and salads and other good stuff.</p>
+    <img src="static/images/QA.jpg" style="margin-left: auto; margin-right: auto; display: block;"/>
+    <div class="w3-panel w3-leftbar w3-light-grey">
+      <p><i>"Use products from nature for what it's worth - but never too early, nor too late." Fresh is the new sweet.</i></p>
+      <p>Chef, Coffeeist and Owner: Liam Brown</p>
+    </div>
+    <img src="/w3images/coffeeshop.jpg" style="width:100%;max-width:1000px" class="w3-margin-top">
+    <p><strong>Opening hours:</strong> everyday from 6am to 5pm.</p>
+    <p><strong>Address:</strong> 15 Adr street, 5015, NY</p>
+  </div>
+</div>
+
+{% endblock %}

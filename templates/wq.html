@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Wirt QnA{% endblock %}
+{% block head %}
+<script  type="text/javascript">
+	function formCheck(){
+		var title = document.forms[0].title.value;
+		var writer= document.forms[0].writer.value;
+		
+		var content = document.forms[0].content.value;
+		
+		if (title == null || title ==""){
+			alert('제목을 입력하세요.');
+			document.forms[0].title.focus();
+			return false;
+		}
+		if (writer == null || writer ==""){
+			alert('작성자를 입력해주세요');
+			document.forms[0].writer.focus();
+			return false;
+		}
+		
+	    
+	}
+</script>
+{% endblock %}
+{% block body %}
+<div class="w3-container" id="where" style="padding-bottom:32px;">
+  <div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">글쓰기</span></h5>
+    <p>아래의 양식에 정보를 입력해주시기 바랍니다.</p>
+    <p><strong>*</strong> 욕은 삼가해주세요.</p>
+	<!--  <form action="/join_action" method="post" name="registerForm" onsubmit="return registerData()"> -->
+	<form action="/qna_action" method="post" onsubmit="return formCheck()">
+		제목 : <input class="w3-input w3-padding-16 w3-border" type="text" name="title"/><br/>
+		작성자 : <input class="w3-input w3-padding-16 w3-border" type="text" name="writer"/><br/>
+		내용 :<br/>
+			<!-- ckeditor JavaScript -->
+			<script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
+			<textarea class="from-control" rows="3" name="content" placeholder="Describe yourself here.."></textarea>
+			<script>CKEDITOR.replace('content');</script>
+		<p><span style="float:right"><button class="w3-button w3-black" type="submit" >저장하기</button></span></p>
+	<span style="float:right"><button class="w3-button w3-black"><a href="qna">목록</a></button></span>
+	</form>
+	
+ 
+ </div>
+</div>
+{% endblock %}

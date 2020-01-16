@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}LOGIN{% endblock %}
+{% block head %}
+{% if result.get('result')==False %}
+<script type="text/javascript">
+	alert("아이디와 비밀번호를 확인해주세요!");
+{% endif %}
+</script>
+
+{% endblock %}
+{% block body %}
+<div class="w3-container" id="where" style="padding-bottom:32px;">
+  <div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">LOGIN</span></h5>
+    <p>아이디와 비밀번호를 입력하신 후 로그인 버튼을 눌러주세요.</p>
+    <form action="/login_action" method="post">
+	  <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="ID" required name="id" value="{{result.id}}"></p>
+      <p><input class="w3-input w3-padding-16 w3-border" type="password" placeholder="Password" required name="password" value="{{result.password}}"></p>
+      <p><button class="w3-button w3-black" type="submit">LOGIN</button></p>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}MyPage{% endblock %}
+{% block head %}
+<script type="text/javascript">
+	var xhr;
+	var idComp;
+	var flagIdCheck;
+	var flagPwCheck;
+	
+	function passwordCheck(){
+        var pw = document.getElementById("password").value;
+        var pwck = document.getElementById("password2").value;
+ 
+        if (pw != pwck) {
+        	document.getElementById("pwCheckResult").innerHTML=
+				"<font color='red'>disaccord</font>";
+            flagPwCheck=false;
+        }
+        else {
+        	document.getElementById("pwCheckResult").innerHTML=
+				"";	
+        	flagPwCheck=true;
+        }
+	}
+
+	function registerData(){
+        if (!flagPwCheck) {
+            alert('비밀번호가 일치하지 않습니다. 다시 입력해 주세요.');
+            return false;
+        }
+        
+        if (document.getElementById("oldPass").value != document.getElementById("hiddenPass").value) {
+        	alert('기존 비밀번호가 틀렸습니다. 다시 확인해주세요.');
+        	return false;	
+        }
+        else {
+        	if (document.getElementById("oldPass").value == document.getElementById("password").value){
+        		alert("새로운 비밀번호를 입력해주세요.");
+        		return false;
+        	}
+        }
+	}
+    function startRequest(){	
+    	idComp=document.getElementById("id");
+    	if(idComp.value==''){
+    		alert('아이디를 입력해주시기 바랍니다.');
+    		return false;
+    	}
+		xhr=new XMLHttpRequest();
+		xhr.onreadystatechange=callback;
+		xhr.open("post","/idcheck");
+		xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		xhr.send("id="+idComp.value);
+	}
+	function callback(){
+		if(xhr.readyState==4){
+			if(xhr.status==200){
+				if(xhr.responseText=="F"){
+					alert("사용할 수 없는 아이디입니다. 다른 아이디를 입력해주세요.");
+					flagIdCheck=false;
+				} else if(xhr.responseText=="T") {
+					alert("사용 가능한 아이디입니다.");
+					flagIdCheck=true;
+				}
+			}
+		}
+	}
+</script>
+
+{% endblock %}
+
+{% block body %}
+<div class="w3-container" id="where" style="padding-bottom:32px;">
+  <div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">회원 정보</span></h5>
+    <p><span class="w3-tag">주의!</span> 개인정보 보호에 유의하시기 바랍니다.</p>
+    <p><strong>*</strong> 표시된 부분은 필수 입력항목입니다.</p>
+    <form action="/PWupdate_action" method="post" name="registerForm" onsubmit="return registerData()">
+      <p>Name: <input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Name" required name="name" value="{{member.name}}" disabled></p>
+	  <p>ID: <input class="w3-input w3-padding-16 w3-border" type="text" required name="id" id="id" onchange="flagIdCheck=false" value="{{member.id}}" disabled >
+      <p><input class="w3-input w3-padding-16 w3-border" type="hidden" id="hiddenPass" value="{{member.password}}" disabled>
+      <p>Check Password : <input class="w3-input w3-padding-16 w3-border" type="password" id="oldPass">
+      <p>new Password: <input class="w3-input w3-padding-16 w3-border" type="password" placeholder="Password" required name="password" id="password" onkeyup="passwordCheck()"></p>
+      <p>new Password Check: <span id="pwCheckResult"></span> <input class="w3-input w3-padding-16 w3-border" type="password" placeholder="Password" required name="password2" id="password2" onkeyup="passwordCheck()"></p>
+      <p><button class="w3-button w3-black" type="submit" >저장하기</button></p>
+    </form>
+  </div>
+</div>
+{% endblock %}

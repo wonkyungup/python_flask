@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}MyPage{% endblock %}
+{% block head %}
+<script type="text/javascript">
+	function member_detail(){
+		alert('노출에 조심하세요');
+		self.location.href='member_detail';
+	}
+	function schedule(){
+		self.location.href='schedule';
+	}
+	function body_state_information(){
+		self.location.href='body_state_information';
+	}
+</script>
+{% endblock %}
+{% block body %}
+		<div class="w3-container" id="where" style="padding-bottom:32px;">
+  <div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">MyPage</span></h5>
+    <p><span class="w3-tag">주의!</span> 개인정보 보호에 유의하시기 바랍니다.</p>
+    
+    <form action="/join_action" method="post" name="registerForm" onsubmit="return registerData()">
+      <p><button class="w3-input w3-padding-16 w3-border" type="button" onclick="member_detail()" >회원 정보</button></p>
+	  <p><button class="w3-input w3-padding-16 w3-border" type="button" onclick="schedule()">스케줄</button></p>
+	  <p><button class="w3-input w3-padding-16 w3-border" type="button" onclick="body_state_information()">신체 정보 확인</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

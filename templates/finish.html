@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}QNA{% endblock %}
+{% block head %}
+
+{% endblock %}
+{% block body %}
+<div class="w3-container" id="where" style="padding-bottom:32px;">
+  <div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">결제 페이지</span></h5>
+    <p><strong>*</strong> 감사합니다 고갱님.</p>
+    <p class="w3-input w3-padding-16 w3-border" type="text" required name="id"  disabled>{{member.id}}</p><br/>
+    <h1>님은</h1>
+    <p class="w3-input w3-padding-16 w3-border" type="text" required name="name"  disabled>{{member.name}}</p><br/>
+    <h2>으로</h2>
+    <p class="w3-input w3-padding-16 w3-border" type="text">코스</p><br/>
+    <h3>(으)로신청하셧습니다.</h3>
+    <span style="float:right"><button><a href="/">홈으로</a></button></span>
+ </div>
+</div>
+{% endblock %}

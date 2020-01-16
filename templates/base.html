@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<title>{% block title %}{% endblock %} - KFC휘트니스</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
+<style>
+body, html {
+    height: 100%;
+    font-family: "Inconsolata", sans-serif;
+}
+.bgimg {
+    background-position: center;
+    background-size: cover;
+    background-image:  url("{{ url_for('static', filename='images/main_logo.jpg') }}");
+    min-height: 25%;
+}
+.menu {
+    display: none;
+}
+.left-box {
+  position: absolute;
+  top: 0; left: 0;
+  background: red;
+}
+.right-box {
+  position: absolute;
+  top: 0; right: 0;
+  background: blue;
+}
+</style>
+{% block head %} {% endblock %}
+<body>
+
+<!-- Links (sit on top) -->
+<div class="w3-top">
+  <div class="w3-row w3-padding w3-black">
+    <div class="w3-col s3">
+      <a href="/" class="w3-button w3-block w3-black">홈</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="/buy" class="w3-button w3-block w3-black">신청하기</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="/PT_GT" class="w3-button w3-block w3-black">Service</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="/qna" class="w3-button w3-block w3-black">문의와답변</a>
+    </div>
+  </div>
+</div>
+
+<!-- Header with image -->
+<header class="bgimg w3-display-container w3-grayscale-min" id="home">
+  <div class="w3-display-bottomleft w3-center w3-padding-large w3-hide-small">
+    
+  </div>
+  <div class="w3-display-middle w3-center">
+    <span class="w3-text-white" style="font-size:90px"><a href="/">KOSTA FITNESS CENTER</a></span>
+  </div>
+  <div class="w3-display-bottomright w3-center w3-padding-large">
+  <h5><span class="w3-tag">KOSTA 175기</span></h5>
+  	{% if session['logged_in'] %}
+  	<span class="w3-text-white">{{session.name}}님 환영합니다! / <a href="logout">로그아웃</a> / <a href="mypage">마이페이지</a></span>
+    {% else %}
+    <span class="w3-text-white"><a href="login">로그인</a> / <a href="join">회원가입</a></span>
+    {% endif %}
+  </div>
+</header>
+
+<!-- Add a background color and large text to the whole page -->
+<div class="w3-sand w3-grayscale w3-large">
+
+
+<!-- About Container -->
+{% block body %} {% endblock %}
+
+<!-- End page content -->
+</div>
+
+
+<!-- Footer -->
+
+<footer class="w3-center w3-light-grey w3-padding-48 w3-large">
+  <p>서울특별시 금천구 가산동 371-59 신한이노플렉스 1차 2층<br>Tel: 02-345-6789 / E-mail: admin@kfcenter.co.kr</p>
+</footer>
+			<div class='left-box'>
+				<script type="text/javascript" src="//www3.smartchatbox.com/shoutbox/start.php?key=313097123"></script>
+			</div>
+
+</body>
+</html>

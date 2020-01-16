@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}QNA{% endblock %}
+{% block head %}
+<script type="text/javascript">
+	function sendit(){
+		if (confirm("정말 신청핫겠습니까??") == true){
+		    document.form.submit();
+		    return true;
+		}else{   
+		    return false;
+		}
+
+	}
+	
+
+	$(document).on("keyup", "input:text[numberOnly]", function() {$(this).val( $(this).val().replace(/[^0-9]/gi,"") );});
+
+	//이메일
+	function res(){
+		var f = document.online_form;
+		if(f.user_email3.value=="a"){
+			f.email2.readOnly= false;
+			f.email2.value="";
+			f.email2.focus();
+		}else if(f.user_email3.value=="b"){
+			f.email2.readOnly= true;
+			f.email2.value="";
+		}else{
+			f.email2.readOnly= true;
+			f.email2.value=f.user_email3.value;
+		}
+	}
+</script>
+{% endblock %}
+{% block body %}
+	<div class="w3-container" id="where" style="padding-bottom:32px;">
+  	<div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">신청내역서</span></h5>
+	<form  action="book_pt_action" method="post" >
+				<fieldset>
+					<!-- 2.신청서 작성 -->
+					<div class="apply_form mt50">
+
+						<h4>신청서 작성</h4>
+						<table class="write mt10">
+							<colgroup>
+							<col width="" />
+							<col width="" />
+						</colgroup>
+						<tr>
+							<th >ID</th>
+							<td ><input type="text"  name="id" disabled/></td>
+						</tr>
+						<tr>
+							<th >이름</th>
+							<td ><input type="text" class="ib170" name="name" disabled /></td>
+							<th width="70">성별</th>
+							<td width="214"> <input name="sex" type="radio" value="남자" checked> 남자&nbsp;&nbsp;&nbsp;<input name="sex" type="radio" value="여자"> 여자</td>
+						</tr>
+						<tr>
+							<th>이메일</th>
+							<td colspan="3">
+								<input type="text" class="ib110" name="email"/> @ <input type="text" class="ib150" name="email2" readonly/>
+								<select name="user_email3" class="ib170" onchange="res();">
+									<option value="b">메일계정선택</option>
+									<option value="a">직접입력</option>
+									<option value="empal.com">empal.com</option>
+									<option value="naver.com">naver.com</option>
+									<option value="hotmail.com">hotmail.com</option>
+									<option value="nate.com">nate.com</option>
+									<option value="dreamwiz.com">dreamwiz.com</option>
+									<option value="lycos.co.kr">lycos.co.kr</option>
+									<option value="yahoo.co.kr">yahoo.co.kr</option>
+									<option value="korea.com">korea.com</option>
+									<option value="paran.com">paran.com</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>휴대폰</th>
+							<td colspan="3">
+								<select name="hp1" class="ib75">
+									<option value="010">010</option>
+									<option value="011">011</option>
+									<option value="016">016</option>
+									<option value="017">017</option>
+									<option value="018">018</option>
+									<option value="019">019</option>
+								</select>
+								- <input type="text" class="ib75" name="hp2"/>
+								- <input type="text" class="ib75" name="hp3"/></td>
+							</tr>
+
+							<tr>
+								<th>문의내용</th>
+								<td ><textarea name="content"></textarea></td>
+							</tr>
+							<tr>
+								<th >첨부파일</th>
+								<td  class="file_input">
+									<!--input type="text"  id="file_route"  class="ib250" readonly/-->
+									<span>
+										<label>
+											<input type="file" value="파일찾기" name="attach" class="search"  />
+										</label>
+									</span></td>
+								</tr>
+							</table>
+							<div class="btn" style="text-align:center; padding-top:30px"><span class="button xLarge black"><a href="/" onclick="sendit()" >신청완료 </a></span> </div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+	</div>
+
+
+{% endblock %}
+
